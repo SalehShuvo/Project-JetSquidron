@@ -10,15 +10,12 @@ void setup() {
   pinMode(r_pwm, OUTPUT);
   digitalWrite(l_en, HIGH);
   digitalWrite(r_en, HIGH);
-
-  analogWrite(l_pwm, 255);
-  analogWrite(r_pwm, 00);
-  delay(300);
-  analogWrite(l_pwm, 0);
-  analogWrite(r_pwm, 0);
 }
 
 void loop() {
-  analogWrite(l_pwm, 200);
-  analogWrite(r_pwm, 100);
+  digitalWrite(l_pwm, HIGH);
+  digitalWrite(r_pwm, LOW);
+  digitalWrite(l_pwm, HIGH);
+  digitalWrite(r_pwm, LOW);
+  
 }

@@ -2,7 +2,7 @@ const int l_en = 2;
 const int r_en = 3;
 const int l_pwm = 5;
 const int r_pwm = 6;
-int speed = 0;
+int speed = 255;
 char msg;
 void setup() {
   pinMode(l_en, OUTPUT);
@@ -16,31 +16,52 @@ void setup() {
 void loop() {
   if (Serial.available()) {
     msg = Serial.read();
+    SpeedSet();
     if (msg != 'S')
       Serial.println(msg);
-    if (msg == 'F')
-      forward();
-    if (msg == 'B')
-      backward();
+    if (msg == 'w') {
+      while (msg != 'W') {
+        msg = Serial.read();
+        SpeedSet();
+        if (msg == 'F')
+          Forward();
+      }
+    }
+    if (msg == 'W') {
+      while (msg != 'w') {
+        msg = Serial.read();
+        SpeedSet();
+        if (msg == 'F')
+          Forward();
+        if (msg == 'S')
+          Stop();
+        if (msg == 'B')
+          Backward();
+      }
+    }
   }
 }
 
 
-
-
-void forward() {
+void Forward() {
   analogWrite(l_pwm, speed);
   analogWrite(r_pwm, 0);
+  Serial.println("Forward");
+  Serial.print("Speed: ");
+  Serial.println(speed);
 }
-void backward() {
+void Backward() {
   analogWrite(l_pwm, 0);
   analogWrite(r_pwm, speed);
+  Serial.println("Backward");
+  Serial.print("Speed: ");
+  Serial.println(speed);
 }
-void stop() {
+void Stop() {
   analogWrite(l_pwm, 0);
   analogWrite(r_pwm, 0);
 }
-void speedSet() {
+void SpeedSet() {
   if (msg == '0')
     speed = 0;
   else if (msg == '1')
